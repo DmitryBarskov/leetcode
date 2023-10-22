@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # https://www.codewars.com/kata/5571d9fc11526780a000011a
 
 # imported to handle any plural/singular conversions
@@ -5,24 +7,29 @@ require 'active_support/core_ext/string'
 
 # can define boolean methods on an instance
 module BooleanMethods
+  # stores boolean methods' calls
   class BooleanBuilder
     def initialize(boolean_attributes, value)
       @boolean_attributes = boolean_attributes
       @value = value
     end
 
-    def method_missing(method, *args)
+    def method_missing(method, *_args)
       @boolean_attributes[method] = @value
     end
 
-    def respond_to_missing?(name, include_all = false)
+    def respond_to_missing?(_name, _include_all = false)
       true
     end
   end
 
-  def is_a; BooleanBuilder.new(boolean_attributes, true); end
+  def is_a # rubocop:disable Naming/PredicateName
+    BooleanBuilder.new(boolean_attributes, true)
+  end
 
-  def is_not_a; BooleanBuilder.new(boolean_attributes, false); end
+  def is_not_a # rubocop:disable Naming/PredicateName
+    BooleanBuilder.new(boolean_attributes, false)
+  end
 
   def method_missing(name, *args)
     return super unless respond_to_missing?(name)
@@ -31,21 +38,24 @@ module BooleanMethods
   end
 
   def respond_to_missing?(name, include_all = false)
-    name.ends_with?('?') && boolean_attributes.key?(name.to_s.delete_suffix('?').to_sym) || super
+    attr_name = name.to_s.delete_suffix('?').to_sym
+    (name.ends_with?('?') && boolean_attributes.key?(attr_name)) || super
   end
 
   private
 
-  def boolean_attributes; @boolean_attributes ||= {}; end
+  def boolean_attributes
+    @boolean_attributes ||= {}
+  end
 end
 
 # can define number of child things
 # when more than 1, an array is created
 module ChildThings
   class ChildArray < Array
-    def each(&block)
+    def each(&)
       super do |item|
-        item.instance_eval(&block)
+        item.instance_eval(&)
       end
     end
   end
@@ -56,15 +66,17 @@ module ChildThings
       @count = count
     end
 
-    def method_missing(method, *args)
+    def method_missing(method, *_args)
       @children[method] = if @count == 1
-        build_single_child(method)
-      else
-        ChildArray.new(@count) { build_single_child(method) }
-      end
+                            build_single_child(method)
+                          else
+                            ChildArray.new(@count) do
+                              build_single_child(method)
+                            end
+                          end
     end
 
-    def respond_to_missing?(name, include_all = false)
+    def respond_to_missing?(_name, _include_all = false)
       true
     end
 
@@ -82,7 +94,7 @@ module ChildThings
     ChildrenBuilder.new(children, number)
   end
 
-  alias_method :having, :has
+  alias having has
 
   def method_missing(name, *args)
     return super unless children.key?(name)
@@ -96,7 +108,9 @@ module ChildThings
 
   private
 
-  def children; @children ||= {}; end
+  def children
+    @children ||= {}
+  end
 end
 
 # can define properties on a per instance level
@@ -111,12 +125,12 @@ module Properties
         @key = key
       end
 
-      def method_missing(method, *args)
+      def method_missing(method, *_args)
         @properties[@key] = method.to_s
         @thing
       end
 
-      def respond_to_missing?(name, include_all = false)
+      def respond_to_missing?(_name, _include_all = false)
         true
       end
     end
@@ -126,21 +140,21 @@ module Properties
       @properties = properties
     end
 
-    def method_missing(method, *args)
+    def method_missing(method, *_args)
       ValueBuilder.new(@thing, @properties, method)
     end
 
-    def respond_to_missing?(name, include_all = false)
+    def respond_to_missing?(_name, _include_all = false)
       true
     end
   end
 
-  def is_the
+  def is_the # rubocop:disable Naming/PredicateName
     PropertyBuilder.new(self, properties)
   end
 
-  alias_method :being_the, :is_the
-  alias_method :and_the, :is_the
+  alias being_the is_the
+  alias and_the is_the
 
   def method_missing(method, *args)
     return super unless properties.key?(method)
@@ -154,7 +168,9 @@ module Properties
 
   private
 
-  def properties; @properties ||= {}; end
+  def properties
+    @properties ||= {}
+  end
 end
 
 # can define methods
@@ -162,26 +178,27 @@ end
 #   "#{name} says: #{phrase}"
 # end
 module Methods
+  # stores definitions
   class MethodDefinition
     def initialize(thing, method_calls)
       @thing = thing
       @method_calls = method_calls
     end
 
-    def method_missing(method, *args, &block)
+    def method_missing(method, *args, &)
       history_key = args.first
       method_calls = @method_calls
       method_calls[history_key.to_sym] ||= [] unless history_key.nil?
 
       # @thing.define_singleton_method(method, &block)
       @thing.define_singleton_method(method) do |*m_args|
-        instance_exec(*m_args, &block).tap do |result|
+        instance_exec(*m_args, &).tap do |result|
           method_calls[history_key.to_sym] << result unless history_key.nil?
         end
       end
     end
 
-    def respond_to_missing?(name, include_all = false)
+    def respond_to_missing?(_name, _include_all = false)
       true
     end
   end
@@ -190,7 +207,7 @@ module Methods
     MethodDefinition.new(self, method_calls)
   end
 
-  def method_missing(method, *args, &block)
+  def method_missing(method, *args, &)
     return super unless method_calls.key?(method)
 
     method_calls[method]
@@ -202,9 +219,12 @@ module Methods
 
   private
 
-  def method_calls; @method_calls ||= {}; end
+  def method_calls
+    @method_calls ||= {}
+  end
 end
 
+# solution
 class Thing
   include BooleanMethods
   include ChildThings
@@ -212,6 +232,7 @@ class Thing
   include Methods
 
   attr_reader :name
+
   def initialize(name)
     @name = name
   end

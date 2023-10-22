@@ -1,3 +1,7 @@
+# frozen_string_literal: true
+
+# https://leetcode.com/problems/decoded-string-at-index/
+
 def chunkify(str)
   first_text, first_reps, *rest = str.split(/(?=\d)|(?<=\d)/)
   rest.reduce(RepeatChunk.new(first_text, first_reps)) do |prev_chunk, token|

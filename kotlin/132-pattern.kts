@@ -1,4 +1,5 @@
-// i < j < k and nums[i] < nums[k] < nums[j]
+// https://leetcode.com/problems/132-pattern/description/
+// TODO: fix TLE
 private class Solution {
   fun find132pattern(nums: IntArray): Boolean {
     val valueToIndex = buildMap<Int, MutableList<Int>> {

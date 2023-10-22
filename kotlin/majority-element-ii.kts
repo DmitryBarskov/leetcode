@@ -1,3 +1,5 @@
+// https://leetcode.com/problems/majority-element-ii
+// TODO:
 class Solution {
     fun majorityElement(nums: IntArray): List<Int> {
         if (nums.size < 3) return nums.toSet().toList()
@@ -39,5 +41,3 @@ fun main() {
 }
 
 main()
-
-

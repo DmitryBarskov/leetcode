@@ -1,6 +1,7 @@
 import java.util.*;
 import java.util.function.*;
 
+// https://leetcode.com/problems/copy-list-with-random-pointer/
 public class Solution {
   public static class Node {
     int val;
@@ -36,7 +37,7 @@ public class Solution {
       listIter = listIter.next;
       copyIter = copyIter.next;
     }
-    
+
     return copy;
   }
 }

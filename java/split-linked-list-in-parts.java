@@ -9,6 +9,7 @@
  * }
  */
 
+// https://leetcode.com/problems/split-linked-list-in-parts/
 class Solution {
   static class ListNode {
     int val;
@@ -25,7 +26,7 @@ class Solution {
     System.out.printf("k: %d, partSize: %d\n", k, partSize);
 
     ListNode[] parts = new ListNode[k];
-    
+
     ListNode iter = head;
     int currentPart = 0;
     while (iter != null) {

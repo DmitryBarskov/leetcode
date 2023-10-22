@@ -1,3 +1,4 @@
+// https://leetcode.com/problems/design-hashmap/submissions/
 open class RealHashMap<K, V>(private val capacity: Int) {
     val array = Array<MutableList<Pair<K, V>>>(capacity) { mutableListOf() }
 

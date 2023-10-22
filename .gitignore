@@ -1,7 +1,12 @@
 node_modules/
+
 .idea/
+*.iml
+.vscode/
+
 out/
 java/*.class
 kotlin/*.class
+
 typescript/*.d.ts
 typescript/*.js

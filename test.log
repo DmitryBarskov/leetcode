@@ -1,0 +1,10 @@
+ruby ruby/*spec.rb
+Loaded suite ruby/3sum_spec
+Started
+..
+Finished in 1.509933 seconds.
+-------------------------------------------------------------------------------
+2 tests, 4 assertions, 0 failures, 0 errors, 0 pendings, 0 omissions, 0 notifications
+100% passed
+-------------------------------------------------------------------------------
+1.32 tests/s, 2.65 assertions/s
