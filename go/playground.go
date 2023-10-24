@@ -1,24 +1,54 @@
 package main
 
-import (
-	"fmt"
-)
+import "fmt"
 
-func getSMSErrorString(cost float64, recipient string) string {
-	return fmt.Sprintf("SMS that costs $%.2f to be sent to '%s' can not be sent", cost, recipient)
+func getMessageCosts(messages []string) []float64 {
+	costs := make([]float64, len(messages))
+
+	for i := 0; i < len(messages); i++ {
+		costs[i] = float64(len(messages[i])) * 0.01
+	}
+
+	return costs
 }
 
 // don't edit below this line
 
-func test(cost float64, recipient string) {
-	s := getSMSErrorString(cost, recipient)
-	fmt.Println(s)
-	fmt.Println("====================================")
+func test(messages []string) {
+	costs := getMessageCosts(messages)
+	fmt.Println("Messages:")
+	for i := 0; i < len(messages); i++ {
+		fmt.Printf(" - %v\n", messages[i])
+	}
+	fmt.Println("Costs:")
+	for i := 0; i < len(costs); i++ {
+		fmt.Printf(" - %.2f\n", costs[i])
+	}
+	fmt.Println("===== END REPORT =====")
 }
 
 func main() {
-	test(1.4, "+1 (435) 555 0923")
-	test(2.1, "+2 (702) 555 3452")
-	test(32.1, "+1 (801) 555 7456")
-	test(14.4, "+1 (234) 555 6545")
+	test([]string{
+		"Welcome to the movies!",
+		"Enjoy your popcorn!",
+		"Please don't talk during the movie!",
+	})
+	test([]string{
+		"I don't want to be here anymore",
+		"Can we go home?",
+		"I'm hungry",
+		"I'm bored",
+	})
+	test([]string{
+		"Hello",
+		"Hi",
+		"Hey",
+		"Hi there",
+		"Hey there",
+		"Hi there",
+		"Hello there",
+		"Hey there",
+		"Hello there",
+		"General Kenobi",
+	})
 }

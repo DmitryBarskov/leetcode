@@ -1,5 +1,6 @@
 package main
 
+// https://leetcode.com/problems/min-cost-climbing-stairs/
 // TODO
 func minCostClimbingStairs(cost []int) int {
 	// var minCost int = 0

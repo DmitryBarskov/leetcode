@@ -1,5 +1,5 @@
 // https://leetcode.com/problems/majority-element-ii
-// TODO:
+// TODO: Fix WA
 class Solution {
     fun majorityElement(nums: IntArray): List<Int> {
         if (nums.size < 3) return nums.toSet().toList()
