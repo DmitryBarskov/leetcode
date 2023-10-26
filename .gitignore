@@ -10,3 +10,6 @@ kotlin/*.class
 
 typescript/*.d.ts
 typescript/*.js
+
+*/playground.*
+*/Playground.*
