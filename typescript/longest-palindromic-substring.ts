@@ -1,34 +1,26 @@
-function longestPalindrome(s: string): string {
-  let longestPalindromeInterval: [number, number] = [0, 0];
+function longestPalindrome(s: string) {
+  let maxPailndromeLength = 0;
+  let palindrome: [number, number] = [0, 0];
   for (let i = 0; i < s.length; i++) {
-    let [from, to] = longestPalindromeFromIndex(s, i);
-    if (
-      to - from > longestPalindromeInterval[1] - longestPalindromeInterval[0]
-    ) {
-      longestPalindromeInterval = [from, to];
-    }
-    [from, to] = longestPalindromeFromIndex(s, i, i + 1);
-    if (
-      to - from > longestPalindromeInterval[1] - longestPalindromeInterval[0]
-    ) {
-      longestPalindromeInterval = [from, to];
+    for (let center2 = 0; center2 < 2; center2++) {
+      const [from, to] = palindromeWithCenter(s, i, center2);
+      const palindromeLength = to - from;
+      if (palindromeLength > maxPailndromeLength) {
+        maxPailndromeLength = palindromeLength;
+        palindrome = [from, to];
+      }
     }
   }
-  return s.slice(...longestPalindromeInterval);
+  return s.slice(...palindrome);
 }
 
-function longestPalindromeFromIndex(
-  str: string,
-  index1: number,
-  index2: number = index1,
-): [number, number] {
-  let i = index1;
-  let j = index2;
+function palindromeWithCenter(str: string, center1: number, center2: number) {
+  let i = center1;
+  let j = center2;
   while (i >= 0 && j < str.length && str[i] === str[j]) {
     i -= 1;
     j += 1;
   }
-
   return [i + 1, j];
 }
 
