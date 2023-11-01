@@ -3,14 +3,18 @@
 require 'test/unit'
 require 'json'
 
-require_relative '3sum'
+require_relative '../3sum'
 
+# test
 class ThreeSum < Test::Unit::TestCase
   def assert_arrays_equal(expected, actual)
     sorted_expected = expected.map(&:sort).sort
     sorted_actual = actual.map(&:sort).sort
-    assert_equal(sorted_expected, sorted_actual,
-                 "Missing elements: #{sorted_expected - sorted_actual}, extra elements: #{sorted_actual - sorted_expected}")
+    assert_equal(
+      sorted_expected, sorted_actual,
+      "Missing elements: #{sorted_expected - sorted_actual}," \
+      "extra elements: #{sorted_actual - sorted_expected}"
+    )
   end
 
   def test_examples
@@ -38,10 +42,9 @@ class ThreeSum < Test::Unit::TestCase
 
     require 'timeout'
 
-    Timeout.timeout(5) do
+    Timeout.timeout(2) do
       actual_result = three_sum(zeroes['input'])
 
-      # require 'byebug'; byebug
       assert_arrays_equal(zeroes['expected'], actual_result)
     end
   end
@@ -50,8 +53,8 @@ class ThreeSum < Test::Unit::TestCase
 
   def fixture_file
     @fixture_file ||= begin
-      path = "#{__dir__}/3sum.json"
-      JSON.parse(File.read(path))
+      path = "#{__dir__}/../../fixtures/3sum.json"
+      JSON.parse(File.read(File.expand_path(path)))
     end
   end
 end

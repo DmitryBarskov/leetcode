@@ -52,6 +52,7 @@ end
 # can define number of child things
 # when more than 1, an array is created
 module ChildThings
+  # works as each but without explicit arguments
   class ChildArray < Array
     def each(&)
       super do |item|
@@ -60,6 +61,7 @@ module ChildThings
     end
   end
 
+  # adds children
   class ChildrenBuilder
     def initialize(children, count)
       @children = children
@@ -117,7 +119,9 @@ end
 # jane.is_the.parent_of.joe
 # jane.parent_of # => 'joe'
 module Properties
+  # passes all the params to ValueBuilder
   class PropertyBuilder
+    # remembers all the properties
     class ValueBuilder
       def initialize(thing, properties, key)
         @thing = thing

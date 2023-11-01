@@ -13,6 +13,7 @@ def chunkify(str)
   end
 end
 
+# text that ends with a digit
 class RepeatChunk
   def initialize(chunk, repetitions)
     @chunk = chunk
@@ -28,6 +29,7 @@ class RepeatChunk
   end
 end
 
+# text that goes after a digit
 class ConcatChunk
   def initialize(*args)
     @chunk1, @chunk2 = args

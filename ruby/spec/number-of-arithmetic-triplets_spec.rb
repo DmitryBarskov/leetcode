@@ -3,7 +3,7 @@
 require 'test/unit'
 require 'json'
 
-require_relative 'number-of-arithmetic-triplets'
+require_relative '../number-of-arithmetic-triplets'
 
 # Test
 class NumberOfArithmeticTriplets < Test::Unit::TestCase

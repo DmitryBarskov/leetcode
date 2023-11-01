@@ -37,6 +37,7 @@ def stars_and_bars(stars, bars) = cnk(stars + bars, bars)
 
 require 'test/unit'
 
+# test num_ways
 class TestFunc < Test::Unit::TestCase
   def run_cases(method_ref, cases)
     cases.each do |args, expected_result|

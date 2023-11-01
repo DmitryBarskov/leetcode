@@ -21,7 +21,7 @@ end
 # @param {Integer} k - search cost
 # @return {Integer}
 def num_of_arrays(*)
-  _num_of_arrays = memoize(lambda do |n, m, k|
+  rec_num_of_arrays = memoize(lambda do |n, m, k|
     return 0 if n <= 0 || m <= 0 || k <= 0
 
     return 0 if k > n
@@ -34,14 +34,14 @@ def num_of_arrays(*)
     total_arrays = 0
     (1..n).each do |maximum_index|
       (1..m).each do |maximum_value|
-        total_arrays += _num_of_arrays.call(
+        total_arrays += rec_num_of_arrays.call(
           maximum_index - 1, maximum_value - 1, k - 1
         ) * (maximum_value**(n - maximum_index))
       end
     end
     total_arrays
   end)
-  _num_of_arrays.call(*)
+  rec_num_of_arrays.call(*)
 end
 
 def fact = ->(n) { (1..n).reduce(1, :*) }
