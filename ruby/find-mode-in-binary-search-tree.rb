@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# https://leetcode.com/problems/find-mode-in-binary-search-tree/
+
 require_relative 'lib/tree_node'
 
 def dfs(node, &)

@@ -39,6 +39,10 @@ class TreeNode
     root
   end
 
+  def self.[](*array)
+    from_array(array)
+  end
+
   def to_a
     queue = [self]
     arr = []

@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# https://leetcode.com/problems/course-schedule/
+
 # @param {Integer} num_courses
 # @param {Integer[][]} prerequisites
 # @return {Boolean}
@@ -16,24 +18,32 @@ def build_graph(number_of_nodes, edges)
 end
 
 def cycled?(graph)
-  visited = Array.new(graph.size) { false }
+  rec = lambda { |path, current_node, not_in_loop, visited|
+    visited.add(current_node)
 
-  rec = lambda { |path, current_node|
-    visited[current_node] = true
-
+    return false if not_in_loop.include?(current_node)
     return true if path.include?(current_node)
 
     graph[current_node].any? do |adjacent|
-      rec.call(path + [current_node], adjacent)
+      rec.call(path + [current_node], adjacent, not_in_loop, visited)
     end
   }
 
-  graph.size.times do |starting_node|
-    next if visited[starting_node]
+  unvisited_nodes = Set.new(0...graph.size)
+  not_in_loop = Set.new
 
-    cycle_found = rec.call([], starting_node)
+  while !unvisited_nodes.empty?
+    unvisited_node = unvisited_nodes.first
+
+    visited_nodes = Set.new
+    cycle_found = rec.call([], unvisited_node, not_in_loop, visited_nodes)
 
     return true if cycle_found
+
+    visited_nodes.each do |visited_node|
+      unvisited_nodes.delete(visited_node)
+      not_in_loop.add(visited_node)
+    end
   end
   false
 end

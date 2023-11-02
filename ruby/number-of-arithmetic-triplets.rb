@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 # https://leetcode.com/problems/number-of-arithmetic-triplets/
+
 # @param {Integer[]} nums
 # @param {Integer} diff
 # @return {Integer}
