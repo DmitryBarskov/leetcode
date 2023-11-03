@@ -2,7 +2,7 @@
 
 # https://leetcode.com/problems/find-mode-in-binary-search-tree/
 
-require_relative 'lib/tree_node'
+require_relative "lib/tree_node"
 
 def dfs(node, &)
   Enumerator.new do |traverse|
@@ -21,7 +21,7 @@ end
 # @param {TreeNode} root
 # @return {Integer[]}
 def find_mode(root)
-  initial_state = { row: 0, max_row: 0, current: nil, winners: [] }
+  initial_state = {row: 0, max_row: 0, current: nil, winners: []}
   dfs(root).each_with_object(initial_state) do |node, state|
     number = node.val
     if number == state[:current]

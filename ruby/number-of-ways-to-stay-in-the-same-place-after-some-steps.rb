@@ -32,10 +32,12 @@ def num_ways_lr(steps, arr_len)
 end
 
 def cnk(n, k) = fact(n) / (fact(k) * fact(n - k))
+
 def fact(n) = (1..n).reduce(1, :*)
+
 def stars_and_bars(stars, bars) = cnk(stars + bars, bars)
 
-require 'test/unit'
+require "test/unit"
 
 # test num_ways
 class TestFunc < Test::Unit::TestCase
@@ -44,7 +46,7 @@ class TestFunc < Test::Unit::TestCase
       actual_result = method_ref.call(*args)
       assert_equal(
         expected_result, actual_result,
-        "#{method_ref.name}(#{args.join(', ')}) expected to equal" \
+        "#{method_ref.name}(#{args.join(", ")}) expected to equal" \
         "#{expected_result}, but was #{actual_result}"
       )
     end
@@ -52,50 +54,50 @@ class TestFunc < Test::Unit::TestCase
 
   def test_fact
     run_cases(method(:fact), {
-                1 => 1,
-                2 => 2,
-                3 => 6,
-                4 => 24,
-                5 => 120,
-                6 => 720
-              })
+      1 => 1,
+      2 => 2,
+      3 => 6,
+      4 => 24,
+      5 => 120,
+      6 => 720
+    })
   end
 
   def test_cnk
     run_cases(method(:cnk), {
-                [5, 3] => 10,
-                [6, 3] => 20,
-                [6, 6] => 1,
-                [5, 5] => 1,
-                [2, 1] => 2,
-                [6, 4] => 15,
-                [4, 2] => 6
-              })
+      [5, 3] => 10,
+      [6, 3] => 20,
+      [6, 6] => 1,
+      [5, 5] => 1,
+      [2, 1] => 2,
+      [6, 4] => 15,
+      [4, 2] => 6
+    })
   end
 
   def test_stars_and_bars
     run_cases(method(:stars_and_bars), {
-                [2, 2] => 6
-              })
+      [2, 2] => 6
+    })
   end
 
   def test_num_ways_lr
     run_cases(method(:num_ways_lr), {
-                [2, 4] => 1, # RL
-                [3, 2] => 0, # can't do 3 steps and get to initial index
-                [4, 2] => 2, # RLRL, RRLL
-                [4, 1] => 0, # can't move
-                [4, 3] => 2, # RLRL, RRLL
-                [6, 3] => 4, # RLRLRL, RRLLRL, RRRLLL, RRLRLL
-                [6, 9] => 4 # ^
-              })
+      [2, 4] => 1, # RL
+      [3, 2] => 0, # can't do 3 steps and get to initial index
+      [4, 2] => 2, # RLRL, RRLL
+      [4, 1] => 0, # can't move
+      [4, 3] => 2, # RLRL, RRLL
+      [6, 3] => 4, # RLRLRL, RRLLRL, RRRLLL, RRLRLL
+      [6, 9] => 4 # ^
+    })
   end
 
   def test_num_ways
     run_cases(method(:num_ways), {
-                [2, 4] => 2,
-                [3, 2] => 4,
-                [4, 2] => 8
-              })
+      [2, 4] => 2,
+      [3, 2] => 4,
+      [4, 2] => 8
+    })
   end
 end

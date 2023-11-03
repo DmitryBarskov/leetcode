@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-require 'test/unit'
-require 'timeout'
+require "test/unit"
+require "timeout"
 
-require_relative '../count-nodes-equal-to-average-of-subtree'
-require_relative '../lib/tree_node'
+require_relative "../count-nodes-equal-to-average-of-subtree"
+require_relative "../lib/tree_node"
 
 # Test
 class AverageOfSubtreeTest < Test::Unit::TestCase

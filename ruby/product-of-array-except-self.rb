@@ -12,7 +12,7 @@ def product_except_self(nums)
   end
 
   product = 1
-  (0..(reverse_product.size-2)).each do |index|
+  (0..(reverse_product.size - 2)).each do |index|
     reverse_product[index] = product * reverse_product[index + 1]
     product *= nums[index]
   end

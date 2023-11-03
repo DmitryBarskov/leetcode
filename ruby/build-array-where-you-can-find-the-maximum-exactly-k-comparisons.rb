@@ -45,7 +45,9 @@ def num_of_arrays(*)
 end
 
 def fact = ->(n) { (1..n).reduce(1, :*) }
+
 def cnk = ->(n, k) { fact.call(n) / (fact.call(k) * fact.call(n - k)) }
+
 def stars_and_bars = ->(stars, bars) { cnk.call(stars + bars, bars) }
 
 def num_of_arrays2(n, m, k)

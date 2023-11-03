@@ -60,19 +60,19 @@ class TreeNode
     arr.reverse.drop_while(&:nil?).reverse
   end
 
-  def to_s(indent: '')
+  def to_s(indent: "")
     <<~TEXT.strip
       #{indent}(#{val}
-      #{indent}  #{left&.to_s(indent: "#{indent}  ") || 'nil'}
-      #{indent}  #{right&.to_s(indent: "#{indent}  ") || 'nil'})
+      #{indent}  #{left&.to_s(indent: "#{indent}  ") || "nil"}
+      #{indent}  #{right&.to_s(indent: "#{indent}  ") || "nil"})
     TEXT
   end
 
-  def inspect(indent: '')
+  def inspect(indent: "")
     <<~TEXT.strip
       #{indent}#<TreeNode @val=#{val}
-      #{indent}  @left =#{left&.inspect(indent: "#{indent}  ") || 'nil'}
-      #{indent}  @right=#{right&.inspect(indent: "#{indent}  ") || 'nil'}>
+      #{indent}  @left =#{left&.inspect(indent: "#{indent}  ") || "nil"}
+      #{indent}  @right=#{right&.inspect(indent: "#{indent}  ") || "nil"}>
     TEXT
   end
 end

@@ -5,7 +5,7 @@
 def chunkify(str)
   first_text, first_reps, *rest = str.split(/(?=\d)|(?<=\d)/)
   rest.reduce(RepeatChunk.new(first_text, first_reps)) do |prev_chunk, token|
-    if token.between?('2', '9')
+    if token.between?("2", "9")
       RepeatChunk.new(prev_chunk, token)
     else
       ConcatChunk.new(prev_chunk, token)

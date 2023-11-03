@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-require 'test/unit'
-require 'timeout'
+require "test/unit"
+require "timeout"
 
-require_relative '../course-schedule'
-require_relative '../lib/tree_node'
+require_relative "../course-schedule"
+require_relative "../lib/tree_node"
 
 # Test
 class CourseScheduleTest < Test::Unit::TestCase
@@ -23,18 +23,18 @@ class CourseScheduleTest < Test::Unit::TestCase
   end
 
   def test_medium_example
-    courses = fixture_file['medium']
+    courses = fixture_file["medium"]
 
     Timeout.timeout(2) do
-      assert_equal courses['expected'], can_finish(*courses['args'])
+      assert_equal courses["expected"], can_finish(*courses["args"])
     end
   end
 
   def test_large_example
-    courses = fixture_file['large']
+    courses = fixture_file["large"]
 
     Timeout.timeout(2) do
-      assert_equal courses['expected'], can_finish(*courses['args'])
+      assert_equal courses["expected"], can_finish(*courses["args"])
     end
   end
 

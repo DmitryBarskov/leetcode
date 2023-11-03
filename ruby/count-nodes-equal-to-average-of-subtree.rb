@@ -22,6 +22,6 @@ def iter(node)
 
   [
     count, sum,
-    left_eql_count + right_eql_count + ((sum / count) == node.val ? 1 : 0)
+    left_eql_count + right_eql_count + (((sum / count) == node.val) ? 1 : 0)
   ]
 end

@@ -3,7 +3,7 @@
 # https://www.codewars.com/kata/5571d9fc11526780a000011a
 
 # imported to handle any plural/singular conversions
-require 'active_support/core_ext/string'
+require "active_support/core_ext/string"
 
 # can define boolean methods on an instance
 module BooleanMethods
@@ -34,12 +34,12 @@ module BooleanMethods
   def method_missing(name, *args)
     return super unless respond_to_missing?(name)
 
-    boolean_attributes[name.to_s.delete_suffix('?').to_sym]
+    boolean_attributes[name.to_s.delete_suffix("?").to_sym]
   end
 
   def respond_to_missing?(name, include_all = false)
-    attr_name = name.to_s.delete_suffix('?').to_sym
-    (name.ends_with?('?') && boolean_attributes.key?(attr_name)) || super
+    attr_name = name.to_s.delete_suffix("?").to_sym
+    (name.ends_with?("?") && boolean_attributes.key?(attr_name)) || super
   end
 
   private
@@ -70,12 +70,12 @@ module ChildThings
 
     def method_missing(method, *_args)
       @children[method] = if @count == 1
-                            build_single_child(method)
-                          else
-                            ChildArray.new(@count) do
-                              build_single_child(method)
-                            end
-                          end
+        build_single_child(method)
+      else
+        ChildArray.new(@count) do
+          build_single_child(method)
+        end
+      end
     end
 
     def respond_to_missing?(_name, _include_all = false)
@@ -96,7 +96,7 @@ module ChildThings
     ChildrenBuilder.new(children, number)
   end
 
-  alias having has
+  alias_method :having, :has
 
   def method_missing(name, *args)
     return super unless children.key?(name)
@@ -157,8 +157,8 @@ module Properties
     PropertyBuilder.new(self, properties)
   end
 
-  alias being_the is_the
-  alias and_the is_the
+  alias_method :being_the, :is_the
+  alias_method :and_the, :is_the
 
   def method_missing(method, *args)
     return super unless properties.key?(method)

@@ -41,7 +41,8 @@ class NestedIterator
   end
 
   # @return {Integer}
-  def next; end
+  def next
+  end
 end
 
 # Your NestedIterator will be called like this:
