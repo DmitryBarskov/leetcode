@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # https://leetcode.com/problems/count-nodes-equal-to-average-of-subtree/
 
 # @param {TreeNode} root

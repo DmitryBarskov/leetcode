@@ -32,7 +32,7 @@ def cycled?(graph)
   unvisited_nodes = Set.new(0...graph.size)
   not_in_loop = Set.new
 
-  while !unvisited_nodes.empty?
+  until unvisited_nodes.empty?
     unvisited_node = unvisited_nodes.first
 
     visited_nodes = Set.new
