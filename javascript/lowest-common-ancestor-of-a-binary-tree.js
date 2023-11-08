@@ -90,33 +90,11 @@ Deno.test("example 1 & 2", () => {
  * @return {TreeNode}
  */
 function lowestCommonAncestor(root, p, q) {
-  const pPath = findPath(root, p);
-  const qPath = findPath(root, q);
-  const shortrestPath = Math.min(pPath.length, qPath.length);
-
-  for (let i = shortrestPath - 1; i >= 0; i--) {
-    if (qPath[i] === pPath[i]) {
-      return qPath[i];
-    }
-  }
-  return root;
-}
-
-function findPath(tree, node) {
-  if (!tree) {
-    return null;
-  }
-  if (tree === node) {
-    return [tree];
-  }
-  const pathInLeftSubtree = tree.left && findPath(tree.left, node);
-  if (pathInLeftSubtree) {
-    return [tree, ...pathInLeftSubtree];
-  }
-  const pathInRightSubtree = tree.right && findPath(tree.right, node);
-  if (pathInRightSubtree) {
-    return [tree, ...pathInRightSubtree];
-  }
-  return null;
+  if (root === null) return null;
+  if (root === p || root === q) return root;
+  const foundInLeft = lowestCommonAncestor(root.left, p, q);
+  const foundInRight = lowestCommonAncestor(root.right, p, q);
+  if (foundInLeft && foundInRight) return root;
+  return foundInLeft ?? foundInRight;
 }
 // @leetup=code
