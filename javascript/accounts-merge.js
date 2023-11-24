@@ -19,8 +19,15 @@
  *
  * Example 1:
  *
- * Input: accounts = [["John","johnsmith@mail.com","john_newyork@mail.com"],["John","johnsmith@mail.com","john00@mail.com"],["Mary","mary@mail.com"],["John","johnnybravo@mail.com"]]
- * Output: [["John","john00@mail.com","john_newyork@mail.com","johnsmith@mail.com"],["Mary","mary@mail.com"],["John","johnnybravo@mail.com"]]
+ * Input: accounts = [
+ *   ["John","johnsmith@mail.com","john_newyork@mail.com"],
+ *   ["John","johnsmith@mail.com","john00@mail.com"],
+ *   ["Mary","mary@mail.com"],["John","johnnybravo@mail.com"]
+ * ]
+ * Output: [
+ *   ["John","john00@mail.com","john_newyork@mail.com","johnsmith@mail.com"],
+ *   ["Mary","mary@mail.com"],["John","johnnybravo@mail.com"]
+ * ]
  * Explanation:
  * The first and second John's are the same person as they have the common email "j
  * ohnsmith@mail.com".
@@ -33,14 +40,20 @@
  *
  * Example 2:
  *
- * Input: accounts = [["Gabe","Gabe0@m.co","Gabe3@m.co","Gabe1@m.co"],["Kevin",
- * "Kevin3@m.co","Kevin5@m.co","Kevin0@m.co"],["Ethan","Ethan5@m.co","Ethan4@m.co",
- * "Ethan0@m.co"],["Hanzo","Hanzo3@m.co","Hanzo1@m.co","Hanzo0@m.co"],["Fern","Fern
- * 5@m.co","Fern1@m.co","Fern0@m.co"]]
- * Output: [["Ethan","Ethan0@m.co","Ethan4@m.co","Ethan5@m.co"],["Gabe","Gabe0@
- * m.co","Gabe1@m.co","Gabe3@m.co"],["Hanzo","Hanzo0@m.co","Hanzo1@m.co","Hanzo3@m.
- * co"],["Kevin","Kevin0@m.co","Kevin3@m.co","Kevin5@m.co"],["Fern","Fern0@m.co","F
- * ern1@m.co","Fern5@m.co"]]
+ * Input: accounts = [
+ *   ["Gabe","Gabe0@m.co","Gabe3@m.co","Gabe1@m.co"],
+ *   ["Kevin","Kevin3@m.co","Kevin5@m.co","Kevin0@m.co"],
+ *   ["Ethan","Ethan5@m.co","Ethan4@m.co", "Ethan0@m.co"],
+ *   ["Hanzo","Hanzo3@m.co","Hanzo1@m.co","Hanzo0@m.co"],
+ *   ["Fern","Fern5@m.co","Fern1@m.co","Fern0@m.co"]
+ * ]
+ * Output: [
+ *   ["Ethan","Ethan0@m.co","Ethan4@m.co","Ethan5@m.co"],
+ *   ["Gabe","Gabe0@m.co","Gabe1@m.co","Gabe3@m.co"],
+ *   ["Hanzo","Hanzo0@m.co","Hanzo1@m.co","Hanzo3@m.co"],
+ *   ["Kevin","Kevin0@m.co","Kevin3@m.co","Kevin5@m.co"],
+ *   ["Fern","Fern0@m.co","Fern1@m.co","Fern5@m.co"]
+ * ]
  *
  * Constraints:
  *
@@ -92,85 +105,83 @@ Deno.test("example 2", () => {
 
 Deno.test("failed case", () => {
   const accounts = [
-    ["David","David0@m.co","David1@m.co"],
-    ["David","David3@m.co","David4@m.co"],
-    ["David","David4@m.co","David5@m.co"],
-    ["David","David2@m.co","David3@m.co"],
-    ["David","David1@m.co","David2@m.co"]
+    ["David", "David0@m.co", "David1@m.co"],
+    ["David", "David3@m.co", "David4@m.co"],
+    ["David", "David4@m.co", "David5@m.co"],
+    ["David", "David2@m.co", "David3@m.co"],
+    ["David", "David1@m.co", "David2@m.co"],
   ];
   assertArrayIncludes(
     accountsMerge(accounts),
     [
-      ["David","David0@m.co","David1@m.co","David2@m.co","David3@m.co","David4@m.co","David5@m.co"]
-    ]
+      ["David", "David0@m.co", "David1@m.co", "David2@m.co", "David3@m.co", "David4@m.co", "David5@m.co"],
+    ],
   );
 });
 // @leetup=custom
 // @leetup=code
 
-/**
- * TODO: implement merging correctly: [A, B], [B, C], [C, D] should be merged to [A, B, C, D]
- * @param {string[][]} accounts
- * @return {string[][]}
- */
 function accountsMerge(accounts) {
   const people = groupByName(accounts);
 
-  /** @type {Array<Array<string>>} */
   const mergedAccounts = [];
 
   people.forEach((accs, name) => {
-    /** @type {Array<Set<string>>} */
-    const mergedEmails = [];
-
-    for (let i = 0; i < accs.length; i++) {
-      if (mergedEmails.length === 0) {
-        mergedEmails.push(accs[i]);
-        continue;
-      }
-      for (let j = 0; j < mergedEmails.length; j++) {
-        if (samePerson(accs[i], mergedEmails[j])) {
-          mergeAccount(mergedEmails[j], accs[i]);
-        } else {
-          mergedEmails.push(accs[i]);
-        }
-      }
-    }
-
-    mergedAccounts.push(...mergedEmails.map(emails => [name, ...[...emails].sort()]));
+    const graph = buildGraph(accs);
+    console.log(graph);
+    findConnectedComponents(graph).forEach(component => {
+      mergedAccounts.push([name, ...component.sort()]);
+    })
   });
   return mergedAccounts;
 }
 
-/**
- * @param {Set<string>} emails1 container to add emails to
- * @param {Set<string>} emails2 emails to be added to emails1
- */
-function mergeAccount(emails1, emails2) {
-  for (const email of emails2) {
-    emails1.add(email);
-  }
+function buildGraph(accs) {
+  const graph = {};
+  accs.forEach((accountEmails) => {
+    for (const email of accountEmails) {
+      graph[email] ??= new Set();
+      for (const adj of accountEmails) {
+        graph[email].add(adj);
+      }
+    }
+  });
+  return graph;
 }
 
-/**
- * @param {Set<string>} account1 emails of an account
- * @param {Set<string>} account2 emails of another account
- * @returns {boolean} true if accounts have any common email
- */
-function samePerson(account1, account2) {
-  for (const email of account1) {
-    if (account2.has(email)) {
+function findConnectedComponents(graph) {
+  const visited = new Array(Object.keys(graph).length);
+  const components = [];
+  for (const email in graph) {
+    const currentComponent = [];
+    dfs(graph, email, (node) => {
+      if (visited[node]) {
+        return false;
+      }
+      currentComponent.push(node);
+      visited[node] = true;
       return true;
+    });
+    if (currentComponent.length > 0) {
+      components.push(currentComponent);
     }
   }
-  return false;
+  return components;
 }
 
-/**
- *
- * @param {Array<Array<string>>} accounts
- * @returns {Map<string, Array<Set<string>>} map { name => set<email>[] }
- */
+function dfs(graph, startingNode, callback) {
+  const stack = [startingNode];
+  while (stack.length > 0) {
+    const node = stack.pop();
+    if (!callback(node)) {
+      continue;
+    }
+    for (const adj of graph[node]) {
+      stack.push(adj);
+    }
+  }
+}
+
 function groupByName(accounts) {
   const byName = new Map();
   for (let i = 0; i < accounts.length; i++) {
