@@ -51,10 +51,37 @@
 *   how would you optimize your solution?
 * 
 */
+import java.util.*;
+
+public class Main {
+    public static void main(String[] args) {
+        MedianFinder medianFinder = new MedianFinder();
+        medianFinder.addNum(6);
+        System.out.println(medianFinder);
+        medianFinder.addNum(10);
+        System.out.println(medianFinder);
+        medianFinder.addNum(2);
+        System.out.println(medianFinder);
+        medianFinder.addNum(6);
+        System.out.println(medianFinder);
+        medianFinder.addNum(5);
+        System.out.println(medianFinder);
+        medianFinder.addNum(0);
+        System.out.println(medianFinder);
+        medianFinder.addNum(6);
+        System.out.println(medianFinder);
+        medianFinder.addNum(3);
+        System.out.println(medianFinder);
+        medianFinder.addNum(1);
+        System.out.println(medianFinder);
+        medianFinder.addNum(0);
+        System.out.println(medianFinder);
+    }
+}
 // @leetup=custom
 // @leetup=code
-// TODO: implement heap and try to use 2 heaps with equal amount of elements
-class Heap {
+
+final class Heap {
     private final ArrayList<Integer> array;
     private final Comparator<Integer> comparator;
 
@@ -70,19 +97,104 @@ class Heap {
     public int size() {
         return this.array.size();
     }
+
+    public int removeTop() {
+        int top = top();
+        array.set(0, array.get(size() - 1));
+        array.remove(size() - 1);
+        siftDown(0);
+        return top;
+    }
+
+    public void insert(int value) {
+        array.add(value);
+        siftUp(size() - 1);
+    }
+
+    private void siftUp(int fromIndex) {
+        int i = fromIndex;
+        while (compareAt(i, (i - 1) / 2) < 0) {
+            swap(i, (i - 1) / 2);
+            i = (i - 1) / 2;
+        }
+    }
+
+    private void siftDown(int fromIndex) {
+        int current = fromIndex;
+        while (2 * current + 1 < size()) {
+            int left = 2 * current + 1;
+            int right = 2 * current + 2;
+            int leastChild = left;
+            if (right < size() && compareAt(right, left) < 0) {
+                leastChild = right;
+            } else {
+                leastChild = left;
+            }
+            if (compareAt(current, leastChild) <= 0) {
+                break;
+            }
+            swap(current, leastChild);
+            current = leastChild;
+        }
+    }
+
+    private void swap(int index1, int index2) {
+        int temp = array.get(index1);
+        array.set(index1, array.get(index2));
+        array.set(index2, temp);
+    }
+
+    private int compareAt(int i1, int i2) {
+        return comparator.compare(array.get(i1), array.get(i2));
+    }
+
+    @Override
+    public String toString() {
+        return array.toString();
+    }
 }
 
 class MedianFinder {
+    private final Heap lteMedian;
+    private final Heap gtMedian;
+
     public MedianFinder() {
-        
+        this.lteMedian = new Heap((a, b) -> b - a);
+        this.gtMedian = new Heap((a, b) -> a - b);
     }
     
     public void addNum(int num) {
-        
+        if (lteMedian.size() == 0 && gtMedian.size() == 0) {
+            lteMedian.insert(num);
+            return;
+        }
+
+        if (num <= findMedian()) {
+            lteMedian.insert(num);
+            while (lteMedian.size() > gtMedian.size()) {
+                gtMedian.insert(lteMedian.removeTop());
+            }
+        } else {
+            gtMedian.insert(num);
+            while (gtMedian.size() > lteMedian.size()) {
+                lteMedian.insert(gtMedian.removeTop());
+            }
+        }
     }
     
     public double findMedian() {
-        
+        if (gtMedian.size() == lteMedian.size()) {
+            return (gtMedian.top() + lteMedian.top()) / 2.0;
+        } else if (gtMedian.size() > lteMedian.size()) {
+            return gtMedian.top();
+        } else {
+            return lteMedian.top();
+        }
+    }
+
+    @Override
+    public String toString() {
+        return findMedian() + " -> (" + lteMedian + " + " + gtMedian + ")";
     }
 }
 
