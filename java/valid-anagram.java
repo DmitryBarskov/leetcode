@@ -38,22 +38,23 @@ class Solution {
         if (s.length() != t.length()) {
             return false;
         }
-        int[] sLetters = countLetters(s);
-        int[] tLetters = countLetters(t);
-        for (int i = 0; i < sLetters.length; i++) {
-            if (sLetters[i] != tLetters[i]) {
+        int[] letters = new int[26];
+        for (int i = 0; i < s.length(); i++) {
+            letters[s.charAt(i) - 'a']++;
+        }
+        for (int i = 0; i < t.length(); i++) {
+            int hash = t.charAt(i) - 'a';
+            letters[hash]--;
+            if (letters[hash] < 0) {
+                return false;
+            }
+        }
+        for (int i = 0; i < letters.length; i++) {
+            if (letters[i] != 0) {
                 return false;
             }
         }
         return true;
     }
-
-    static int[] countLetters(String s) {
-        int[] letters = new int[26];
-        for (int i = 0; i < s.length(); i++) {
-            letters[s.charAt(i) - 'a']++;
-        }
-        return letters;
-    }        
 }
 // @leetup=code

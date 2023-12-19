@@ -39,37 +39,96 @@
  *
  */
 import java.util.*;
+import java.util.function.*;
 import java.util.stream.*;
 
 // @leetup=custom
 // @leetup=code
 
+public class Main {
+    public static void main(String[] args) {
+        System.out.println(new ExpressionBuilder(new Tokens("(1+(4+5+2)-3)+(6+8)").toList()).build());
+    }
+}
+
 interface Expression {
     int intValue();
+
+    class Builder implements Expression {
+        private Builder parent;
+        private String operation = "";
+        private ArrayList<Expression> arguments = new ArrayList<>();
+
+        public Builder(Builder parent) {
+            this.parent = parent;
+        }
+        public Builder() {}
+
+        public void withOperation(String operation) {
+            this.operation = operation;
+        }
+        public void addArgument(Expression arg) {
+            this.arguments.add(arg);
+        }
+        public Builder parent() {
+            return parent;
+        }
+        public Expression toExpression() {
+            if (operation.equals("")) {
+                if (arguments.size() == 0) {
+                    return new JustNumber(0);
+                }
+                return new JustNumber(arguments.get(0).intValue());
+            }
+            return new ArithmeticExpression(operation, arguments);
+        }
+
+        @Override
+        public int intValue() {
+            return toExpression().intValue();
+        }
+    }
 }
 
 class ExpressionBuilder {
     private final List<String> tokens;
 
     public ExpressionBuilder(List<String> tokens) {
-        this.tokens = tokens;
+        this.tokens = new ArrayList<>(tokens);
     }
 
-    public Expression buildExpression() {
-        while (true) {
-            var token = ...;
-            if (token.equals("-")) {
-
-            } else if (token.equals("+")) {
-
+    public Expression build() {
+        // "(1+(4+5+2)-3)+(6+8)"
+        //        +
+        //      /   \
+        //     -     +
+        //    / \   / \
+        //   +   3 6   8
+        //  / \
+        // 1   +
+        //    /|\
+        //   4 5 2
+        Expression.Builder root = new Expression.Builder();
+        root.withOperation("+");
+        root.addArgument(new JustNumber(0));
+        Expression.Builder currentNode = root;
+        for (var token : tokens) {
+            if (token.equals("-") || token.equals("+")) {
+                var parent = currentNode;
+                currentNode = new Expression.Builder(currentNode);
+                currentNode.withOperation(token);
+                currentNode.addArgument(parent);
             } else if (token.equals("(")) {
-
+                var parent = currentNode;
+                currentNode = new Expression.Builder(currentNode);
+                currentNode.addArgument(parent);
             } else if (token.equals(")")) {
-
-            } else { // a number
-                new JustNumber(token);
+                currentNode = currentNode.parent();
+            } else {
+                currentNode.addArgument(new JustNumber(token));
             }
         }
+        return root.toExpression();
     }
 }
 
@@ -77,7 +136,7 @@ class JustNumber implements Expression {
     private final int value;
 
     public JustNumber(String str) {
-        this(Integer.valueOf(str));
+        this(Integer.parseInt(str));
     }
 
     public JustNumber(int value) {
@@ -88,20 +147,33 @@ class JustNumber implements Expression {
     public int intValue() {
         return value;
     }
+
+    public String toString() {
+        return String.valueOf(value);
+    }
 }
 
 class ArithmeticExpression implements Expression {
+    private final static Map<String, Function<List<Expression>, Integer>> SUPPORTED_OPERATIONS = Map.of(
+            "-", arguments -> {
+                if (arguments.size() == 1) {
+                    return -arguments.get(0).intValue();
+                }
+                return arguments.stream().mapToInt(Expression::intValue).reduce((a, b) -> a - b).orElse(0);
+            },
+        "+", (List<Expression> arguments) -> arguments.stream().mapToInt(Expression::intValue).sum()
+    );
     private final String operation;
-    private final List<Expression> arguments;
+    private final ArrayList<Expression> arguments;
 
     public ArithmeticExpression(String operation, List<Expression> arguments) {
         this.operation = operation;
-        this.arguments = arguments;
+        this.arguments = new ArrayList<>(arguments);
     }
 
     @Override
     public int intValue() {
-        return 0;
+        return SUPPORTED_OPERATIONS.get(operation).apply(arguments);
     }
 
     @Override
@@ -134,6 +206,7 @@ class Solution {
 
     public static int calculate(String s) {
         // \\s+|(?=\\()|(?<=\\))|\\b
+        return 0;
     }
 }
 // @leetup=code
