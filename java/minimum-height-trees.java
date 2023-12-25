@@ -44,48 +44,56 @@
 * 
 */
 import java.util.AbstractMap.SimpleEntry;
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Deque;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.List;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.function.BiFunction;
+import java.util.function.*;
+import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
-        var graph = new Solution().findMinHeightTrees(4, new int[][]{
-            new int[]{1, 0}, new int[]{1, 2}, new int[]{1, 3}
-        });
+        var graph = new Solution().findMinHeightTrees(
+            4,
+            new int[][]{
+                new int[]{1, 0}, new int[]{1, 2}, new int[]{1, 3}
+            }
+        );
         System.out.println(graph);
     }
 }
 // @leetup=custom
 // @leetup=code
-import java.util.Deque;
-import java.util.AbstractMap.SimpleEntry;
 
 class Solution {
     public static List<Integer> findMinHeightTrees(int n, int[][] edges) {
-        var graph = graphFromEdges(n, edges);
+        ArrayList<ArrayList<Integer>> graph = graphFromEdges(n, edges);
+				List<Integer> leaves = findLeaves(graph);
+        int targetHeight = (findGraphBreadth(graph, leaves.get(0)) + 1) / 2;
+				System.out.println(targetHeight);
+        List<Integer> rootCandidates = leaves.stream().flatMap(leaf -> findRoot(graph, leaf, targetHeight).stream()).sorted().distinct().toList();
+				System.out.println(rootCandidates);
         Map<Integer, List<Integer>> byLevels = new HashMap<>();
         int minHeight = n;
         for (int i = 0; i < n; i++) {
-            int depth = bfsReduce(graph, i, (_depth, level) -> level, 0);
+            int depth;
+            try {
+                final int stopSearchAt = minHeight + 1;
+                depth = bfsReduce(graph, i, (_depth, level) -> {
+                    if (level >= stopSearchAt) {
+                        throw new RuntimeException("Stop searching");
+                    }
+                    return level;
+                }, 0);
+            } catch (RuntimeException e) {
+                depth = minHeight + 2;
+            }
             byLevels.computeIfAbsent(depth, (k) -> new ArrayList<>());
             byLevels.get(depth).add(i);
             if (depth < minHeight) {
                 minHeight = depth;
             }
         }
-        System.out.println(byLevels);
         return byLevels.get(minHeight);
     }
 
-    static List<ArrayList<Integer>> graphFromEdges(int n, int[][] edges) {
+    static ArrayList<ArrayList<Integer>> graphFromEdges(int n, int[][] edges) {
         ArrayList<ArrayList<Integer>> graph = new ArrayList<>();
         for (int i = 0; i < n; i++) {
             graph.add(new ArrayList<>());
@@ -98,7 +106,51 @@ class Solution {
         }
         return graph;
     }
-    
+
+		static List<Integer> findLeaves(ArrayList<ArrayList<Integer>> graph) {
+        List<Integer> leaves = new ArrayList<>();
+        for (int i = 0; i < graph.size(); i++) {
+            if (graph.get(i).size() == 1) {
+                leaves.add(i);
+            }
+        }
+        return leaves;
+		}
+
+    static int findGraphBreadth(ArrayList<ArrayList<Integer>> graph, int aLeaf) {
+        return bfsReduce(graph, aLeaf, (breadth, level) -> {
+            return Math.max(breadth, level);
+        }, 0) + 1;
+    }
+
+    static List<Integer> findRoot(ArrayList<ArrayList<Integer>> graph, int aLeaf, int treeHight) {
+        Deque<Map.Entry<Integer, Integer>> queue = new ArrayDeque<>();
+        Set<Integer> visited = new HashSet<>();
+        queue.offer(new SimpleEntry<>(1, aLeaf));
+        ArrayList<Integer> roots = new ArrayList<>();
+        while (!queue.isEmpty()) {
+            var entry = queue.poll();
+            int level = entry.getKey();
+            int currentNode = entry.getValue();
+            if (visited.contains(currentNode)) {
+                continue;
+            }
+            if (level == treeHight) {
+                roots.add(currentNode);
+                continue;
+            }
+            if (level > treeHight) {
+                continue;
+            }
+            visited.add(currentNode);
+
+            graph.get(currentNode).forEach(adjacent -> {
+                queue.offer(new SimpleEntry<>(level + 1, adjacent));
+            });
+        }
+        return roots;
+    }
+
     static int bfsReduce(List<? extends List<Integer>> graph, int root, BiFunction<Integer, Integer, Integer> callback, int initialState) {
         Deque<Map.Entry<Integer, Integer>> queue = new ArrayDeque<>();
         Set<Integer> visited = new HashSet<>();

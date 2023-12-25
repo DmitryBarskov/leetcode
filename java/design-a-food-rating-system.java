@@ -94,9 +94,9 @@ public class Main {
 class FoodRatings {
     static record Food(String name, int rating) { }
 
-    private final HashMap<String, PriorityQueue<Food>> topFood = new HashMap<>();
-    private final HashMap<String, String> foodToCuisine = new HashMap<>();
-    private final HashMap<String, Integer> nameToRating = new HashMap<>();
+    private final Map<String, PriorityQueue<Food>> topFood = new HashMap<>();
+    private final Map<String, String> foodToCuisine = new HashMap<>();
+    private final Map<String, Integer> nameToRating = new HashMap<>();
     private final Comparator<Food> comparator =
         Comparator.comparing(Food::rating).reversed()
             .thenComparing(Comparator.comparing(Food::name));
