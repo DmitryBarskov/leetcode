@@ -1,7 +1,6 @@
 # @leetup=custom
 # @leetup=info id=98 lang=ruby slug=validate-binary-search-tree
 
-
 # Given the `root` of a binary tree, *determine if it is a valid binary search
 # tree (BST)*.
 #
@@ -34,7 +33,7 @@
 
 # @leetup=custom
 
-require_relative 'lib/tree_node'
+require_relative "lib/tree_node"
 
 # @leetup=code
 
@@ -64,4 +63,4 @@ def is_valid_bst(root, min: -Float::INFINITY, max: Float::INFINITY)
 end
 # @leetup=code
 
-is_valid_bst(p TreeNode[5,4,6,nil,nil,3,7]) => false
+is_valid_bst(p(TreeNode[5, 4, 6, nil, nil, 3, 7])) => false

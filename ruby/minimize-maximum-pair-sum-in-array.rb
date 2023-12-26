@@ -1,7 +1,6 @@
 # @leetup=custom
 # @leetup=info id=1877 lang=ruby slug=minimize-maximum-pair-sum-in-array
 
-
 # The pair sum of a pair `(a,b)` is equal to `a + b`. The maximum pair sum
 # is the largest pair sum in a list of pairs.
 #

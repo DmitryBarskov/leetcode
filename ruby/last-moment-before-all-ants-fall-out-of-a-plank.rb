@@ -1,7 +1,6 @@
 # @leetup=custom
 # @leetup=info id=1503 lang=ruby slug=last-moment-before-all-ants-fall-out-of-a-plank
 
-
 # We have a wooden plank of the length `n` units. Some ants are walking on the
 # plank, each ant moves with a speed of 1 unit per second. Some of the ants
 # move to the left, the other move to the right.
@@ -93,7 +92,7 @@
 def get_last_moment(n, left, right)
   [
     left.reduce { |farthest, ant| [farthest, ant].max },
-    right.reduce { |closest, ant| [closest, ant].min }&.-(n)&.-@,
+    right.reduce { |closest, ant| [closest, ant].min }&.-(n)&.-@
   ].compact.max
 end
 # @leetup=code

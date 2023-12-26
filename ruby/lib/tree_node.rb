@@ -59,7 +59,7 @@ class TreeNode
 
     arr.reverse.drop_while(&:nil?).reverse
   end
-  alias deconstruct to_a
+  alias_method :deconstruct, :to_a
 
   def to_s(indent: "")
     <<~TEXT.strip

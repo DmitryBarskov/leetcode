@@ -43,7 +43,7 @@ def build_tree(preorder, inorder)
   TreeNode.new(
     preorder[0],
     build_tree(preorder[1..i], inorder[...i]),
-    build_tree(preorder[i+1..], inorder[i+1..]),
+    build_tree(preorder[i + 1..], inorder[i + 1..])
   )
 end
 

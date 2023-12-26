@@ -1,7 +1,6 @@
 # @leetup=custom
 # @leetup=info id=1637 lang=ruby slug=widest-vertical-area-between-two-points-containing-no-points
 
-
 # Given `n` `points` on a 2D plane where `points[i] = [xi, yi]`, Return* the
 # widest vertical area between two points such that no points are inside the
 # area.*

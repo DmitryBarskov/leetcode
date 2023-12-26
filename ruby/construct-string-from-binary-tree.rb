@@ -1,7 +1,6 @@
 # @leetup=custom
 # @leetup=info id=606 lang=ruby slug=construct-string-from-binary-tree
 
-
 # Given the `root` of a binary tree, construct a string consisting of parenthesis
 # and integers from a binary tree with the preorder traversal way, and return it.
 #
@@ -30,7 +29,7 @@
 # * The number of nodes in the tree is in the range `[1, 104]`.
 # * `-1000 <= Node.val <= 1000`
 #
-require_relative 'lib/tree_node.rb'
+require_relative "lib/tree_node"
 # @leetup=custom
 # @leetup=code
 
@@ -61,6 +60,6 @@ end
 
 # @leetup=code
 # @leetup=custom
-tree2str(TreeNode[1,2,3,4]) => "1(2(4))(3)"
-tree2str(TreeNode[1,2,3,nil,4]) => "1(2()(4))(3)"
+tree2str(TreeNode[1, 2, 3, 4]) => "1(2(4))(3)"
+tree2str(TreeNode[1, 2, 3, nil, 4]) => "1(2()(4))(3)"
 # @leetup=custom

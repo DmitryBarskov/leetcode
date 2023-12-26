@@ -1,7 +1,6 @@
 # @leetup=custom
 # @leetup=info id=994 lang=ruby slug=rotting-oranges
 
-
 # You are given an `m x n` `grid` where each cell can have one of three values:
 #
 # * `0` representing an empty cell,
@@ -53,7 +52,7 @@
 # @param {Integer[][]} grid
 # @return {Integer}
 def oranges_rotting(grid)
-  distance_to_rotten = Hash.new
+  distance_to_rotten = {}
   rotten = []
   fresh = []
   grid.size.times do |i|
@@ -95,14 +94,14 @@ def rot!(grid, distance_to_rotten, x, y, dist:)
     rot!(grid, distance_to_rotten, x - 1, y, dist: dist + 1),
     rot!(grid, distance_to_rotten, x, y + 1, dist: dist + 1),
     rot!(grid, distance_to_rotten, x, y - 1, dist: dist + 1),
-    dist,
+    dist
   ].compact.max
 end
 # @leetup=code
 
-oranges_rotting([[2,1,1],[1,1,0],[0,1,1]]) => 4
-oranges_rotting([[2,1,1],[0,1,1],[1,0,1]]) => -1
-oranges_rotting([[0,2]]) => 0
-oranges_rotting([[0,2,2]]) => 0
+oranges_rotting([[2, 1, 1], [1, 1, 0], [0, 1, 1]]) => 4
+oranges_rotting([[2, 1, 1], [0, 1, 1], [1, 0, 1]]) => -1
+oranges_rotting([[0, 2]]) => 0
+oranges_rotting([[0, 2, 2]]) => 0
 oranges_rotting([[0]]) => 0
 oranges_rotting([[1]]) => -1

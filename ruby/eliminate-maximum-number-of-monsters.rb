@@ -1,7 +1,6 @@
 # @leetup=custom
 # @leetup=info id=1921 lang=ruby slug=eliminate-maximum-number-of-monsters
 
-
 # You are playing a video game where you are defending your city from a group of
 # `n` monsters. You are given a 0-indexed integer array `dist` of size `n`,
 # where `dist[i]` is the initial distance in kilometers of the `ith` monster
@@ -80,6 +79,6 @@ def eliminate_maximum(distances, speeds)
 end
 # @leetup=code
 
-eliminate_maximum([1,3,4], [1,1,1]) => 3
-eliminate_maximum([1,1,2,3], [1,1,1,1]) => 1
+eliminate_maximum([1, 3, 4], [1, 1, 1]) => 3
+eliminate_maximum([1, 1, 2, 3], [1, 1, 1, 1]) => 1
 eliminate_maximum([3, 2, 4], [5, 3, 2]) => 1

@@ -1,7 +1,6 @@
 # @leetup=custom
 # @leetup=info id=1716 lang=ruby slug=calculate-money-in-leetcode-bank
 
-
 # Hercy wants to save money for his first car. He puts money in the Leetcode bank
 # every day.
 #

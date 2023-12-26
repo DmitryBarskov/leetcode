@@ -1,7 +1,6 @@
 # @leetup=custom
 # @leetup=info id=1535 lang=ruby slug=find-the-winner-of-an-array-game
 
-
 # Given an integer array `arr` of distinct integers and an integer `k`.
 #
 # A game will be played between the first two elements of the array (i.e. `arr[0]`
@@ -99,4 +98,4 @@ def get_winner(arr, k)
 end
 # @leetup=code
 
-get_winner([1,11,22,33,44,55,66,77,88,99], 1000000000) => 99
+get_winner([1, 11, 22, 33, 44, 55, 66, 77, 88, 99], 1000000000) => 99

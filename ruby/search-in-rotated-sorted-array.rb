@@ -1,7 +1,6 @@
 # @leetup=custom
 # @leetup=info id=33 lang=ruby slug=search-in-rotated-sorted-array
 
-
 # There is an integer array `nums` sorted in ascending order (with distinct
 # values).
 #
@@ -62,7 +61,7 @@ def search(nums, target)
     return -1
   end
 
-  nums[target_idx] == target ? target_idx : -1
+  (nums[target_idx] == target) ? target_idx : -1
 end
 
 # Finds first index of item which predicate is true
@@ -88,8 +87,8 @@ def b_search(arr, from: 0, to: arr.size, &predicate)
 end
 # @leetup=code
 
-search([4,5,6,7,0,1,2], 0) => 4
-search([4,5,6,7,0,1,2], 3) => -1
+search([4, 5, 6, 7, 0, 1, 2], 0) => 4
+search([4, 5, 6, 7, 0, 1, 2], 3) => -1
 search([1], 0) => -1
 search([1], 1) => 0
 search([3, 1], 1) => 1

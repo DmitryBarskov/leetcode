@@ -1,7 +1,6 @@
 # @leetup=custom
 # @leetup=info id=2264 lang=ruby slug=largest-3-same-digit-number-in-string
 
-
 # You are given a string `num` representing a large integer. An integer is
 # good if it meets the following conditions:
 #
@@ -59,6 +58,6 @@ end
 # @leetup=code
 # @leetup=custom
 largest_good_integer("6777133339") => "777"
-largest_good_integer("2300019")    => "000"
-largest_good_integer("42352338")   => ""
+largest_good_integer("2300019") => "000"
+largest_good_integer("42352338") => ""
 # @leetup=custom

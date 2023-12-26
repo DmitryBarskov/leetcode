@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative "../lib/tree_node.rb"
+require_relative "../lib/tree_node"
 
 TreeNode.new(
   8,
@@ -11,7 +11,7 @@ TreeNode.new(
       6,
       TreeNode.new(4),
       TreeNode.new(7)
-    ),
+    )
   ),
   TreeNode.new(
     10,

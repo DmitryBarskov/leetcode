@@ -1,7 +1,6 @@
 # @leetup=custom
 # @leetup=info id=91 lang=ruby slug=decode-ways
 
-
 # A message containing letters from `A-Z` can be encoded into numbers using
 # the following mapping:
 #
@@ -71,7 +70,7 @@ end
 
 # @param {String} code
 def valid_code?(code)
-  code.to_i.between?(1, 26) && (!code.start_with?('0') || code.size == 1)
+  code.to_i.between?(1, 26) && (!code.start_with?("0") || code.size == 1)
 end
 # @leetup=code
 # @leetup=custom

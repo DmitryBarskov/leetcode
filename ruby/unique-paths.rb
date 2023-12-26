@@ -1,7 +1,6 @@
 # @leetup=custom
 # @leetup=info id=62 lang=ruby slug=unique-paths
 
-
 # There is a robot on an `m x n` grid. The robot is initially located at the
 # top-left corner (i.e., `grid[0][0]`). The robot tries to move to the
 # bottom-right corner (i.e., `grid[m - 1][n - 1]`). The robot can only move
@@ -46,10 +45,10 @@ def unique_paths(m, n)
   m.pred.times do
     dp = dp.each_with_object(Array.new(n)).with_index do |its, idx|
       its => [item, new_dp]
-      if idx.zero?
-        new_dp[idx] = 1
+      new_dp[idx] = if idx.zero?
+        1
       else
-        new_dp[idx] = new_dp[idx - 1] + dp[idx]
+        new_dp[idx - 1] + dp[idx]
       end
     end
   end

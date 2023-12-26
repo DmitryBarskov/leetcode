@@ -1,7 +1,6 @@
 # @leetup=custom
 # @leetup=info id=1160 lang=ruby slug=find-words-that-can-be-formed-by-characters
 
-
 # You are given an array of strings `words` and a string `chars`.
 #
 # A string is good if it can be formed by characters from chars (each
@@ -44,11 +43,11 @@ end
 def count_characters(words, chars)
   chars_count = count_chars(chars)
   words.filter_map do |word|
-    word.length if count_chars(word).all?{_2 <= chars_count[_1] }
+    word.length if count_chars(word).all? { _2 <= chars_count[_1] }
   end.sum
 end
 # @leetup=code
 # @leetup=custom
-count_characters(["cat","bt","hat","tree"], "atach") => 6
-count_characters(["hello","world","leetcode"], "welldonehoneyr") => 10
+count_characters(["cat", "bt", "hat", "tree"], "atach") => 6
+count_characters(["hello", "world", "leetcode"], "welldonehoneyr") => 10
 # @leetup=custom

@@ -1,7 +1,6 @@
 # @leetup=custom
 # @leetup=info id=1266 lang=ruby slug=minimum-time-visiting-all-points
 
-
 # On a 2D plane, there are `n` points with integer coordinates `points[i] = [xi,
 # yi]`. Return *the minimum time in seconds to visit all the points in the
 # order given by *`points`.
@@ -57,6 +56,6 @@ def min_time_to_visit_all_points(points)
 end
 # @leetup=code
 # @leetup=custom
-min_time_to_visit_all_points([[1,1],[3,4],[-1,0]]) => 7
-min_time_to_visit_all_points([[3,2],[-2,2]]) => 5
+min_time_to_visit_all_points([[1, 1], [3, 4], [-1, 0]]) => 7
+min_time_to_visit_all_points([[3, 2], [-2, 2]]) => 5
 # @leetup=custom
