@@ -49,18 +49,18 @@ end
 # @return {Integer}
 def num_rolls_to_target(n, k, target)
   rec = memoize(->(dice, sum) {
-    return 0 if sum <= 0
-    return 0 if dice.zero?
-    return 1 if sum <= k && dice == 1
-    return 0 if dice == 1
+    return 0 if dice == 0 || sum <= 0
+    return 0 if dice == 1 && sum > k
+    return 1 if dice == 1 && sum <= k
 
     (1..k).reduce(0) { |acc, edge| (acc + rec.call(dice - 1, sum - edge)) % MODULO }
   })
-  rec.call(n, target)
+  rec.call(n, target).tap { puts rec.memo.map(&:to_s).join("\n") }
 end
 # @leetup=code
 # @leetup=custom
 num_rolls_to_target(1, 6, 3) => 1
 num_rolls_to_target(2, 6, 7) => 6
+num_rolls_to_target(3, 6, 7) => 15
 num_rolls_to_target(30, 30, 500) => 222616187
 # @leetup=custom

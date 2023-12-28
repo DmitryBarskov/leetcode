@@ -82,8 +82,7 @@ def get_winner(arr, k)
 
   slice = Slice.new(arr)
   winner = nil
-  begin
-    a, b = arr
+  loop do
     if winner == slice.max
       streak += 1
     else
@@ -93,9 +92,12 @@ def get_winner(arr, k)
     slice.push(slice.min)
     slice[1] = winner
     slice.shift
-  end while streak < k
+
+    break if streak >= k
+  end
   winner
 end
 # @leetup=code
-
+# @leetup=custom
 get_winner([1, 11, 22, 33, 44, 55, 66, 77, 88, 99], 1000000000) => 99
+# @leetup=custom

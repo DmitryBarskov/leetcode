@@ -42,7 +42,7 @@ KEYPAD = {
   "7": "pqrs",
   "8": "tuv",
   "9": "wxyz"
-}.map { |d, ls| [d.to_s, ls.split("")] }.to_h.freeze
+}.map { |d, ls| [d.to_s, ls.chars] }.to_h.freeze
 
 # @param {String} digits
 # @return {String[]}
