@@ -55,18 +55,18 @@ def _get_length_of_optimal_compression(s, k)
   dp[0][0] = 1
   same_cons_chars = Array.new(s.length)
   s.length.times do |i|
-    if i > 0 && s[i] == s[i - 1]
-      same_cons_chars[i] = same_cons_chars[i - 1] + 1
+    same_cons_chars[i] = if i > 0 && s[i] == s[i - 1]
+      same_cons_chars[i - 1] + 1
     else
-      same_cons_chars[i] = 1
+      1
     end
   end
 
   (1...s.length).each do |i|
-    if [1, 2, 9, 99].include?(same_cons_chars[i])
-      dp[0][i] = dp[0][i - 1] + 1
+    dp[0][i] = if [1, 2, 9, 99].include?(same_cons_chars[i])
+      dp[0][i - 1] + 1
     else
-      dp[0][i] = dp[0][i - 1]
+      dp[0][i - 1]
     end
   end
   # Input: s = "aaabcccd", k = 2
@@ -92,7 +92,7 @@ def _get_length_of_optimal_compression(s, k)
         # (dp[i - 1][j - 1]), # deleting current char
         (dp[i - 1][j - 1] if [1, 2, 10, 100].include?(same_cons_chars[j])), # deleting a char could make compressed string shorter (a2 -> a, a10 -> a9 etc)
         (dp[i][j - 1] if [3, 4, 5, 6, 7, 8, 9, 11, 12, 13].include?(same_cons_chars[j])), # not deleting won't add extra char
-        (dp[i][j - 1] + 1),
+        (dp[i][j - 1] + 1)
       ].compact.min
 
       print "dp[#{i}][#{j}] = #{dp[i][j]} (scc #{same_cons_chars[j]}) "
@@ -102,13 +102,12 @@ def _get_length_of_optimal_compression(s, k)
   dp[k][s.length - 1]
 end
 
-
 def compress(str)
   str.each_with_object([]) do |c, code|
     next code.last[1] += 1 if code.any? && code.last[0] == c
 
     code.push([c, 1])
-  end.map { _2 == 1 ? _1 : "#{_1}#{_2}" }.join
+  end.map { (_2 == 1) ? _1 : "#{_1}#{_2}" }.join
 end
 
 def memoize(func)
@@ -150,7 +149,7 @@ def removal_priority(block_size)
 end
 
 def size_of_compressed(chunks)
-  chunks.map { _1 == 1 ? _2 : "#{_2}#{_1}" }.join.size
+  chunks.map { (_1 == 1) ? _2 : "#{_2}#{_1}" }.join.size
 end
 
 def greedy(s, k)
@@ -178,16 +177,15 @@ def get_length_of_optimal_compression(s, k)
 
     current_char, *after = after
 
-    return recur.(before + [current_char], after, to_remove) if before.last == current_char && current_char == after.first
+    return recur.call(before + [current_char], after, to_remove) if before.last == current_char && current_char == after.first
 
     [
-      recur.(before, after, to_remove - 1),
-      recur.(before + [current_char], after, to_remove)
+      recur.call(before, after, to_remove - 1),
+      recur.call(before + [current_char], after, to_remove)
     ].compact.min_by { compress(_1).size }
   })
 
-
-  recur.([], s.chars, k).then { size_of_compressed(chunks(_1)) }.tap { p recur.memo }
+  recur.call([], s.chars, k).then { size_of_compressed(chunks(_1)) }.tap { p recur.memo }
 end
 
 # @leetup=code
