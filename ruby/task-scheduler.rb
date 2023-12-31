@@ -145,5 +145,5 @@ least_interval(["A", "A", "A", "B", "B", "B"], 0) => 6
 least_interval(["A", "A", "A", "B", "B", "B"], 1) => 6
 least_interval(["A", "A", "A", "B", "B", "B"], 2) => 8
 least_interval(["A", "A", "A", "A", "A", "A", "B", "C", "D", "E", "F", "G"], 2) => 16
-least_interval(["A","A","A","B","B","B", "C","C","C", "D", "D", "E"], 2) => 12
+least_interval(["A", "A", "A", "B", "B", "B", "C", "C", "C", "D", "D", "E"], 2) => 12
 # @leetup=custom
