@@ -32,7 +32,10 @@
 # @leetup=code
 
 def max_length_between_equal_characters(s) =
-  s.each_char.with_index.with_object({}) { |c, h| h[c[0]] ||= c[1]; h[:max] = [h[:max], c[1] - h[c[0]] - 1].compact.max }[:max]
+  s.each_char.with_index.with_object({}) { |c, h|
+    h[c[0]] ||= c[1]
+    h[:max] = [h[:max], c[1] - h[c[0]] - 1].compact.max
+  }[:max]
 
 # @leetup=code
 # @leetup=custom
