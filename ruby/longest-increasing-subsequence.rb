@@ -32,8 +32,7 @@
 require "byebug"
 # @param {Integer[]} nums
 # @return {Integer}
-def length_of_lis(nums, from: 0, to: nums.size, &block)
-  block ||= proc { true }
+def length_of_lis(nums, from: 0, to: nums.size)
   recur(nums, from: 0, to: nums.size) { true }[:size]
 end
 

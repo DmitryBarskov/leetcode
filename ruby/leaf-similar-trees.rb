@@ -50,8 +50,16 @@ def zip_on_longest(seq1, seq2)
 
   Enumerator.new do |e|
     loop do
-      v1 = iter1&.next rescue iter1 = nil
-      v2 = iter2&.next rescue iter2 = nil
+      v1 = begin
+        iter1&.next
+      rescue
+        iter1 = nil
+      end
+      v2 = begin
+        iter2&.next
+      rescue
+        iter2 = nil
+      end
       break if iter1.nil? && iter2.nil?
       e.yield([v1, v2])
     end
