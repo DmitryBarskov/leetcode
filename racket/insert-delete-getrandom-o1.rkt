@@ -44,6 +44,8 @@
 ;   is called.
 
 #lang racket
+
+(require data/gvector)
 ; @leetup=custom
 ; @leetup=code
 
@@ -51,8 +53,7 @@
   (class object%
     (super-new)
 
-    (field [vals (make-vector 256)]
-           [size 0]
+    (field [vals (make-gvector #:capacity 256)]
            [positions (make-hash)])
     
     ; insert : exact-integer? -> boolean?
@@ -60,11 +61,8 @@
       (if (hash-has-key? positions val)
           #f
           (begin
-            (when (>= (+ size 1) (vector-length vals))
-              (grow))
-            (vector-set! vals size val)
-            (hash-set! positions val size)
-            (set! size (+ size 1))
+            (hash-set! positions val (gvector-count vals))
+            (gvector-add! vals val)
             #t)))
     ; remove : exact-integer? -> boolean?
     (define/public (remove val)
@@ -73,23 +71,15 @@
             ([position (hash-ref positions val)])
             (begin
               (hash-remove! positions val)
-              (set! size (- size 1))
-              (vector-set! vals position (vector-ref vals size))
-              (when (< position size)
-                (hash-set! positions (vector-ref vals position) position))
+              (gvector-set! vals position (gvector-ref vals (- (gvector-count vals) 1)))
+              (gvector-remove-last! vals)
+              (when (< position (gvector-count vals))
+                (hash-set! positions (gvector-ref vals position) position))
               #t))
           #f))
     ; get-random : -> exact-integer?
     (define/public (get-random)
-      (vector-ref vals (random size)))
-
-    (define/private (grow)
-      (set! vals (build-vector
-                  (* (vector-length vals) 2)
-                  (lambda (i)
-                    (if (< i (vector-length vals))
-                      (vector-ref vals i)
-                      0)))))))
+      (gvector-ref vals (random (gvector-count vals))))))
 ;; Your randomized-set% object will be instantiated and called as such:
 ;; (define obj (new randomized-set%))
 ;; (define param_1 (send obj insert val))
