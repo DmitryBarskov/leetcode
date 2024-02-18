@@ -9,7 +9,16 @@ public class Main {
       Solution.mostBooked(3, new int[][]{{1,20},{2,10},{3,5},{4,9},{6,8}})
     );
     System.out.println(
-      Solution.mostBooked(4, new int[][]{{18,19},{3,12},{17,19},{2,13},{7,10}})
+      Solution.mostBooked(
+        4,
+        new int[][]{{18,19},{3,12},{17,19},{2,13},{7,10}}
+      )
+    );
+    System.out.println(
+      Solution.mostBooked(
+        5,
+        new int[][]{{40,47},{7,16},{27,38},{16,43},{38,40},{2,25}}
+      )
     );
   }
 }
@@ -20,6 +29,9 @@ class Solution {
       return new ScheduledMeeting(newStart, duration);
     }
     public int end() { return start + duration; }
+    public String toString() {
+      return String.format("{%d, %d}", start(), end());
+    }
   }
   static record CurrentMeeting(int end, int room) {}
 
@@ -43,6 +55,7 @@ class Solution {
 
     int currentTime = 0;
     while (!waitingMeetings.isEmpty()) {
+      ScheduledMeeting nextMeeting = waitingMeetings.poll();
       while (!currentMeetings.isEmpty() &&
             currentMeetings.peek().end() <= currentTime) {
         CurrentMeeting ended = currentMeetings.poll();
@@ -53,11 +66,10 @@ class Solution {
         currentTime = endingMeeting.end(); // wait a meeting to end
         availableRooms.offer(endingMeeting.room());
       }
-      ScheduledMeeting nextMeeting = waitingMeetings.poll();
-      if (nextMeeting.start() > currentTime) {
-        currentTime = nextMeeting.start(); // wait a meeting to start
-      } else {
+      if (nextMeeting.start() < currentTime) {
         nextMeeting = nextMeeting.reschedule(currentTime);
+      } else {
+        currentTime = nextMeeting.start(); // wait a meeting to start
       }
       int room = availableRooms.poll();
       currentMeetings.offer(new CurrentMeeting(nextMeeting.end(), room));
