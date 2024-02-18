@@ -53,6 +53,11 @@ class Solution {
     int currentTime = 0;
     while (!waitingMeetings.isEmpty()) {
       ScheduledMeeting nextMeeting = waitingMeetings.poll();
+      if (nextMeeting.start() < currentTime) {
+        nextMeeting = nextMeeting.reschedule(currentTime);
+      } else {
+        currentTime = nextMeeting.start(); // wait a meeting to start
+      }
       while (!currentMeetings.isEmpty() &&
             currentMeetings.peek().end() <= currentTime) {
         CurrentMeeting ended = currentMeetings.poll();
@@ -65,8 +70,6 @@ class Solution {
       }
       if (nextMeeting.start() < currentTime) {
         nextMeeting = nextMeeting.reschedule(currentTime);
-      } else {
-        currentTime = nextMeeting.start(); // wait a meeting to start
       }
       int room = availableRooms.poll();
       currentMeetings.offer(new CurrentMeeting(nextMeeting.end(), room));
