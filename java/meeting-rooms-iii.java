@@ -26,12 +26,9 @@ public class Main {
 class Solution {
   static record ScheduledMeeting(int start, int duration) {
     public ScheduledMeeting reschedule(int newStart) {
-      return new ScheduledMeeting(newStart, duration);
+      return new ScheduledMeeting(newStart, duration());
     }
-    public int end() { return start + duration; }
-    public String toString() {
-      return String.format("{%d, %d}", start(), end());
-    }
+    public int end() { return start() + duration(); }
   }
   static record CurrentMeeting(int end, int room) {}
 
