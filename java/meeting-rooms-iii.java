@@ -65,11 +65,11 @@ class Solution {
       }
       if (availableRooms.isEmpty()) {
         CurrentMeeting endingMeeting = currentMeetings.poll();
-        currentTime = endingMeeting.end(); // wait a meeting to end
         availableRooms.offer(endingMeeting.room());
-      }
-      if (nextMeeting.start() < currentTime) {
-        nextMeeting = nextMeeting.reschedule(currentTime);
+        currentTime = endingMeeting.end(); // wait a meeting to end
+        if (nextMeeting.start() < currentTime) {
+          nextMeeting = nextMeeting.reschedule(currentTime);
+        }
       }
       int room = availableRooms.poll();
       currentMeetings.offer(new CurrentMeeting(nextMeeting.end(), room));
