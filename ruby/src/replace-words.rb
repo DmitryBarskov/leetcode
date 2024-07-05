@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Trie
   def self.from_array(array)
     new.tap do |trie|
@@ -31,7 +33,7 @@ end
 # @return {String}
 def replace_words(dictionary, sentence)
   roots = Trie.from_array(dictionary)
-  sentence.split(" ").map do |word|
+  sentence.split.map do |word|
     roots.find_root_for(word) || word
   end.join(" ")
 end

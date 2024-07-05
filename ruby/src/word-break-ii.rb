@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # @param {String} s
 # @param {String[]} word_dict
 # @return {String[]}
@@ -16,18 +18,14 @@ end
 
 def recur(s, trie, t, i, current_word)
   if i >= s.length
-    if current_word.length > 0 && t[""]
-      return [current_word]
-    else
-      return []
-    end
+    return [current_word] if current_word.length.positive? && t[""]
+
+    return []
+
   end
 
   result = []
-  if t[s[i]]
-    result.concat(recur(s, trie, t[s[i]], i + 1, current_word + s[i]))
-
-  end
+  result.concat(recur(s, trie, t[s[i]], i + 1, current_word + s[i])) if t[s[i]]
 
   if t[""]
     result.concat(

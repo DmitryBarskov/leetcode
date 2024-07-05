@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 def intersect(m1, m2)
   m1.keys.to_h { |k| [k, [m1[k], m2[k] || 0].min] }
 end

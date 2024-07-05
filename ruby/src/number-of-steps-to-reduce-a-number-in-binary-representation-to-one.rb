@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # @param {String} s
 # @return {Integer}
 def num_steps(s)
@@ -10,16 +12,13 @@ def num_steps(s)
       ones += 1
       chars.pop
     end
-    if chars.any?
-      chars.pop
-    end
+    chars.pop if chars.any?
     chars.push("1")
     recursive(chars) + ones + 1
   end
 
   recursive(s.chars)
 end
-
 
 num_steps("1") => 0
 num_steps("10") => 1

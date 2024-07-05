@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # @param {Integer[]} nums
 # @param {Integer} k
 # @return {Integer}
@@ -8,9 +10,7 @@ def subarrays_div_by_k(nums, k)
   total = 0
   nums.each do |num|
     prev_mod = (prev_mod + num) % k
-    if h[prev_mod]
-      total += h[prev_mod]
-    end
+    total += h[prev_mod] if h[prev_mod]
     h[prev_mod] += 1
   end
   total

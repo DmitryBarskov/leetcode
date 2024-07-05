@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # @param {String} s
 # @param {String} t
 # @return {Integer}

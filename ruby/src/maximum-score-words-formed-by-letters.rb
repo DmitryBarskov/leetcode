@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # @param {String[]} words
 # @param {Character[]} letters
 # @param {Integer[]} score

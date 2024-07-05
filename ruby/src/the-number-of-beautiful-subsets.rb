@@ -1,13 +1,16 @@
+# frozen_string_literal: true
+
 # @param {Integer[]} nums
 # @param {Integer} k
 # @return {Integer}
 def beautiful_subsets(nums, k)
-  count = nums.group_by(&:itself).to_h { |n, c| [n, c.count] }
+  count = nums.group_by(&:itself).transform_values(&:count)
   groups = []
   visit = Set.new
 
-  count.each do |n, c|
+  count.each_key do |n|
     next if visit.include?(n)
+
     g = {}
     groups.push(g)
 
@@ -25,14 +28,13 @@ def beautiful_subsets(nums, k)
     return cache[n] if cache.key?(n)
 
     skip = iter(n + k, group, k, cache)
-    incl = (2 ** group[n] - 1) * iter(n + 2 * k, group, k, cache)
+    incl = ((2**group[n]) - 1) * iter(n + (2 * k), group, k, cache)
     cache[n] = skip + incl
   end
   cache = {}
 
   groups.reduce(1) { |res, g| res * iter(g.keys.min, g, k, cache) } - 1
 end
-
 
 beautiful_subsets([18, 12, 10, 5, 6, 2, 18, 3], 8) => 143
 beautiful_subsets([2,4,6], 2) => 4
