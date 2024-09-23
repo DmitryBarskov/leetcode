@@ -1,11 +1,11 @@
 defmodule Solution do
   @spec lemonade_change(bills :: [integer]) :: boolean
-  def lemonade_change(bills), do: recur(bills, 0, 0)
+  def lemonade_change(bills, fives \\ 0, tens \\ 0)
 
-  defp recur(_, fives, tens) when fives < 0 or tens < 0, do: false
-  defp recur([], _, _), do: true
-  defp recur([5 | customers], fives, tens), do: recur(customers, fives + 1, tens)
-  defp recur([10 | customers], fives, tens), do: recur(customers, fives - 1, tens + 1)
-  defp recur([20 | customers], fives, 0), do: recur(customers, fives - 3, 0)
-  defp recur([20 | customers], fives, tens), do: recur(customers, fives - 1, tens - 1)
+  def lemonade_change(_, fives, tens) when fives < 0 or tens < 0, do: false
+  def lemonade_change([], _, _), do: true
+  def lemonade_change([ 5 | rest], fives, tens), do: lemonade_change(rest, fives + 1, tens)
+  def lemonade_change([10 | rest], fives, tens), do: lemonade_change(rest, fives - 1, tens + 1)
+  def lemonade_change([20 | rest], fives,    0), do: lemonade_change(rest, fives - 3, 0)
+  def lemonade_change([20 | rest], fives, tens), do: lemonade_change(rest, fives - 1, tens - 1)
 end
