@@ -1,34 +1,40 @@
-import 'dart:collection';
+import "dart:collection";
 
 class Solution {
   bool checkInclusion(String s1, String s2) {
-    if (s2.length < s1.length) { return false; }
-
-    Map<String, int> diff = HashMap<String, int>();
-    for (int i = 0; i < s1.length; i++) {
-      diff[s1[i]] = (diff[s1[i]] ?? 0) + 1;
-      diff[s2[i]] = (diff[s2[i]] ?? 0) - 1;
-      if (diff[s1[i]] == 0) {
-        diff.remove(s1[i]);
+    var count = countChars(s1);
+    int l = 0;
+    for (int r = 0; r < s2.length; r++) {
+      count.update(s2[r], (c) => c - 1, ifAbsent: () => -1);
+      if (count[s2[r]] == 0) {
+        count.remove(s2[r]);
       }
-      if (diff[s2[i]] == 0) {
-        diff.remove(s2[i]);
+      while ((count[s2[r]] ?? 0) < 0) {
+        count.update(s2[l], (c) => c + 1, ifAbsent: () => 1);
+        if (count[s2[l]] == 0) {
+          count.remove(s2[l]);
+        }
+        l++;
       }
-    }
 
-    for (int l = 0, r = s1.length; r < s2.length; l++, r++) {
-      if (diff.isEmpty) {
+      if (count.isEmpty) {
         return true;
       }
-      diff[s2[r]] = (diff[s2[r]] ?? 0) - 1;
-      diff[s2[l]] = (diff[s2[l]] ?? 0) + 1;
-      if (diff[s2[r]] == 0) {
-        diff.remove(s2[r]);
-      }
-      if (diff[s2[l]] == 0) {
-        diff.remove(s2[l]);
-      }
     }
-    return diff.isEmpty;
+    return count.isEmpty;
   }
+
+  Map<String, int> countChars(String s) {
+    var count = Map<String, int>();
+    for (int i = 0; i < s.length; i++) {
+      count.update(s[i], (c) => c + 1, ifAbsent: () => 1);
+    }
+    return count;
+  }
+}
+
+// docker run -it --rm -v /tmp:/tmp dart dart run %
+void main() {
+  print(Solution().checkInclusion("ab", "eidbaooo"));
+  print(Solution().checkInclusion("ab", "eidboaoo"));
 }
