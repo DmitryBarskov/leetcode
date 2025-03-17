@@ -13,3 +13,5 @@ typescript/*.js
 
 */playground.*
 */Playground.*
+
+__pycache__/
