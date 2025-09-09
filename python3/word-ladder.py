@@ -1,7 +1,6 @@
 from typing import List
 
 from collections import deque
-import itertools
 
 
 class Solution:
@@ -33,6 +32,8 @@ class Solution:
                 if word1[i] == word2[i]:
                     continue
                 diff += 1
+                if diff >= 2:
+                    break
             return diff
 
         def bfs(start, target, graph):
@@ -50,29 +51,17 @@ class Solution:
                     queue.append((adj, dist + 1))
             return -1
 
-        sorted_word_list = {
-            diff: set(map(lambda t: t[0], words))
-            for diff, words in itertools.groupby(
-                sorted(
-                    map(lambda w: (w, difference(beginWord, w)), wordList),
-                    key=lambda t: t[1]
-                ),
-                lambda t: t[1]
-            )
-        }
+        graph = { beginWord: set() }
+        for i, _ in enumerate(wordList):
+            if difference(beginWord, wordList[i]) == 1:
+                graph[beginWord].add(wordList[i])
+            for j in range(i + 1, len(wordList)):
+                if difference(wordList[i], wordList[j]) == 1:
+                    if wordList[i] not in graph:
+                        graph[wordList[i]] = set()
+                    if wordList[j] not in graph:
+                        graph[wordList[j]] = set()
+                    graph[wordList[i]].add(wordList[j])
+                    graph[wordList[j]].add(wordList[i])
 
-        if 1 not in sorted_word_list:
-            return 0
-
-        graph = { beginWord: sorted_word_list[1] }
-
-        for diff, words in sorted_word_list.items():
-            for word1 in words:
-                for d in range(-1, 2):
-                    for word2 in sorted_word_list.get(diff + d, []):
-                        if word1 not in graph:
-                            graph[word1] = set()
-                        if difference(word1, word2) != 1:
-                            continue
-                        graph[word1].add(word2)
         return bfs(beginWord, endWord, graph) + 1
