@@ -15,19 +15,21 @@ class Solution:
     1
     >>> Solution().calculate("(1)")
     1
+    >>> Solution().calculate("(7)-(0)+(4)")
+    11
+    >>> Solution().calculate("-2 + 1")
+    -1
     """
 
     def calculate(self, s: str) -> int:
-        print(s)
         return self.eval_tokens(list(self.parse(s)))
 
     def eval_tokens(self, tokens) -> int:
-        sign_stack = [1, 1]
+        sign_stack = [1]
         result = 0
-        print(tokens)
         for i, token in enumerate(tokens):
-            if token == '(' and tokens[i + 1] in ('+', '-'):
-                sign_stack.append(sign_stack[-1])
+            if token == '(' and i > 0 and tokens[i - 1] in ('-', '+'):
+                continue
             elif token == '(':
                 sign_stack.append(sign_stack[-1])
             elif token == ')':
@@ -38,10 +40,8 @@ class Solution:
                 sign_stack.append(sign_stack[-1])
             elif type(token) == int:
                 result += token * sign_stack[-1]
-                sign_stack.pop()
-            else:
-                raise RuntimeError(f"Unhandled token {token}")
-            print(f"[{i}] = {token}, {sign_stack}, {result}")
+                if i > 0 and tokens[i-1] in ('+', '-'):
+                    sign_stack.pop()
         return result
 
     def parse(self, text: str):
@@ -54,6 +54,3 @@ class Solution:
                 yield t
             else:
                 yield int(t)
-
-
-print(Solution().calculate("(1-(4+5-20)+3)-(-2+6+8)"))
